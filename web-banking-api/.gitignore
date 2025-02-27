@@ -1,0 +1,30 @@
+# Bỏ qua node_modules
+node_modules/
+
+# Bỏ qua file lock
+package-lock.json
+yarn.lock
+
+# Bỏ qua môi trường build
+dist/
+build/
+
+# Bỏ qua file log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Bỏ qua môi trường
+.env
+.env.local
+.env.*.local
+
+# Bỏ qua IDE files
+.vscode/
+.idea/
+*.iml
+
+# Bỏ qua OS files
+.DS_Store
+Thumbs.db
