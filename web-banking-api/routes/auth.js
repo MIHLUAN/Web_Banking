@@ -42,21 +42,26 @@ router.get("/me", authMiddleware, async (req, res) => {
 // Đăng ký tài khoản
 router.post("/register", async (req, res) => {
   try {
-    const { username, password, email, fullName, role } = req.body;
+    const { username, password, email, fullName, role,dateOfBirth,phoneNumber,address } = req.body;
     const pool = await poolPromise;
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("✅ Dữ liệu nhận được:", req.body); // Debug dữ liệu từ frontend
 
-    await pool
-      .request()
-      .input("username", sql.NVarChar, username)
-      .input("password", sql.NVarChar, hashedPassword)
-      .input("email", sql.NVarChar, email)
-      .input("fullName", sql.NVarChar, fullName)
-      .input("role", sql.NVarChar, role || "user")
-      .query(
-        `INSERT INTO Users (UserName, PasswordHash, Email, FullName, Role, CreatedAt) 
-         VALUES (@username, @password, @email, @fullName, @role, GETDATE())`
-      );
+   await pool
+  .request()
+  .input("username", sql.NVarChar, username)
+  .input("password", sql.NVarChar, hashedPassword)
+  .input("email", sql.NVarChar, email)
+  .input("fullName", sql.NVarChar, fullName)
+  .input("role", sql.NVarChar, role || "user")
+  .input("dateOfBirth", sql.Date, dateOfBirth) // 🟢 Thêm ngày sinh
+  .input("phoneNumber", sql.NVarChar, phoneNumber) // 🟢 Thêm số điện thoại
+  .input("address", sql.NVarChar, address) // 🟢 Thêm địa chỉ
+  .query(
+    `INSERT INTO Users (UserName, PasswordHash, Email, FullName, Role, DateOfBirth, PhoneNumber, Address, CreatedAt) 
+     VALUES (@username, @password, @email, @fullName, @role, @dateOfBirth, @phoneNumber, @address, GETDATE())`
+  );
+
 
     res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
